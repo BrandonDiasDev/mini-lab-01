@@ -6,9 +6,11 @@ type User = {
   email: string;
 };
 
+
 function App() {
   const [users, setUsers] = useState<User[]>([]);
   const [loading, setLoading] = useState(true);
+  const [count, setCount] = useState(true);
 
   useEffect(() => {
     fetch("https://jsonplaceholder.typicode.com/users")
@@ -16,6 +18,7 @@ function App() {
       .then((data) => {
         setUsers(data);
         setLoading(false);
+        setCount(data.length);
       });
   }, []);
 
@@ -24,6 +27,8 @@ function App() {
       <h1>Lista de usuários (API)</h1>
 
       {loading && <p>Carregando dados...</p>}
+
+      <h2>Total de usuários: {count}</h2>
 
       {!loading && (
         <ul>
@@ -37,5 +42,6 @@ function App() {
     </main>
   );
 }
+
 
 export default App;
