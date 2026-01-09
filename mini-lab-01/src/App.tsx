@@ -10,7 +10,7 @@ type User = {
 function App() {
   const [users, setUsers] = useState<User[]>([]);
   const [loading, setLoading] = useState(true);
-  const [count, setCount] = useState(true);
+  const [finalUsers, setfinalUsers] = useState<User[]>([]);
 
   useEffect(() => {
     fetch("https://jsonplaceholder.typicode.com/users")
@@ -18,30 +18,51 @@ function App() {
       .then((data) => {
         setUsers(data);
         setLoading(false);
-        setCount(data.length);
       });
   }, []);
+
+  const orderByName = () => {
+    const ordered = [...users].sort((a, b) => 
+      a.name.localeCompare(b.name)
+    );
+    setfinalUsers(ordered);
+  };
+
+  const filterByEmail = () => {
+    const filtered = users.filter((user) => 
+      user.email.endsWith(".org")
+    );   
+    setfinalUsers(filtered);
+
+  };
 
   return (
     <main>
       <h1>Lista de usuários (API)</h1>
 
       {loading && <p>Carregando dados...</p>}
-
-      <h2>Total de usuários: {count}</h2>
+      
 
       {!loading && (
-        <ul>
-          {users.map((user) => (
-            <li key={user.id}>
-              {user.name} — {user.email}
-            </li>
-          ))}
-        </ul>
-      )}
+        <>
+          <button onClick={orderByName}>Ordenar por nome</button>
+          <button onClick={filterByEmail}>Filtrar email .org</button>
+
+          <h2>Total: {finalUsers.length}</h2>
+          <ul>
+            {finalUsers.map((usr) => (
+              <li key={usr.id}>
+                {usr.name} — {usr.email}
+              </li>
+            ))}
+          </ul>
+        </>
+      )}   
+    
     </main>
   );
 }
+
 
 
 export default App;
