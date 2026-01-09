@@ -1,10 +1,6 @@
 import { useEffect, useState } from "react";
-
-type User = {
-  id: number;
-  name: string;
-  email: string;
-};
+import { fetchUsers } from "./api/users.ts";
+import type { User } from "./types/User.ts";
 
 
 function App() {
@@ -20,6 +16,8 @@ function App() {
         setLoading(false);
       });
   }, []);
+
+  
 
   const orderByName = () => {
     const ordered = [...users].sort((a, b) => 
